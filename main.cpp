@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <map>
 #include "clases.h"
 #include "plantillas.h"
 
@@ -57,34 +58,31 @@ void question_4() {
     int filler = 0;
     
     // input
-    getline(cin, numbers);
     getline(cin, indexes);
+    getline(cin, numbers);
     cin >> distance >> filler;
 
     // additional variables
     stringstream snumbers{ numbers };
     stringstream sindexes{ indexes };
-    vector<int> data;
+    map<int, int> data;
     int value = 0;
     int index = 0;
 
     // input data
     while (snumbers >> value && sindexes >> index)
-    {
-        if (index > data.size()) data.resize(index);
         data[--index] = value;
-    }
 
     // processing
     vector<int> result(data.size() + distance * (data.size() - 1), filler);
     auto iter_d = begin(data);
     auto iter_r = begin(result);
 
-    *iter_r++ = *iter_d++;
+    *iter_r++ = (iter_d++)->second;
     while (iter_d != end(data))
     {
         iter_r += distance;
-        *iter_r++ = *iter_d++;
+        *iter_r++ = (iter_d++)->second;
     }
 
     // print data
@@ -98,6 +96,6 @@ int main() {
     //question_1(filename);
     //question_2(filename);
     //question_3();
-    //question_4();
+    question_4();
     return 0;
 }
