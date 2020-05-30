@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <iterator>
 #include "clases.h"
 #include "plantillas.h"
 
@@ -25,7 +26,6 @@ void question_2(string filename) {
 
     vector<int> data_;
     ifstream file(filename);
-    data_.clear();
     int value_;
     while (file >> value_)
         data_.push_back(value_);
@@ -56,35 +56,27 @@ void question_4() {
     string indexes;
     int distance = 0;
     int filler = 0;
-    
     // input
     getline(cin, indexes);
     getline(cin, numbers);
     cin >> distance >> filler;
-
     // additional variables
-    stringstream snumbers{ numbers };
-    stringstream sindexes{ indexes };
+    stringstream sn{ numbers };
+    stringstream si{ indexes };
     map<int, int> data;
     int value = 0;
     int index = 0;
-
     // input data
-    while (snumbers >> value && sindexes >> index)
+    while (sn >> value && si >> index)
         data[--index] = value;
-
     // processing
     vector<int> result(data.size() + distance * (data.size() - 1), filler);
-    auto iter_d = begin(data);
-    auto iter_r = begin(result);
-
-    *iter_r++ = (iter_d++)->second;
-    while (iter_d != end(data))
-    {
-        iter_r += distance;
-        *iter_r++ = (iter_d++)->second;
-    }
-
+    auto id = begin(data);
+    auto ir = begin(result);
+    // changing
+    *ir = (id++)->second;
+    while (id != end(data))
+        *(ir += distance) = (id++)->second;
     // print data
     imprimir_collection(cout, result);
 }
